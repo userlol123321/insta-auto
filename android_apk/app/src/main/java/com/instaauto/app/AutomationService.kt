@@ -19,8 +19,8 @@ class AutomationService : Service() {
     private lateinit var engine: InstagramEngine
 
     companion object {
-        const val CHANNEL_ID = "InstaAutoForegroundChannel"
-        const val NOTIFICATION_ID = 1001
+        const val CHANNEL_ID = "InstaAuto247ForegroundChannel"
+        const val NOTIFICATION_ID = 2001
         var isRunning = false
         var dmsSentCount = 0
         var followersServedCount = 0
@@ -32,21 +32,27 @@ class AutomationService : Service() {
         engine = InstagramEngine(this)
         createNotificationChannel()
 
-        // Acquire WakeLock so CPU never sleeps
         val powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
         wakeLock = powerManager.newWakeLock(
             PowerManager.PARTIAL_WAKE_LOCK,
-            "InstaAuto::BackgroundWakeLock"
+            "InstaAuto::ForegroundServiceWakeLock"
         ).apply {
-            acquire(24 * 60 * 60 * 1000L) // 24 hours lock
+            acquire(24 * 60 * 60 * 1000L) // 24-hour wake lock
         }
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        if (!engine.isConnected()) {
+            broadcastLog("⚠️ Error: No Instagram account connected. Stopping automator.")
+            stopSelf()
+            return START_NOT_STICKY
+        }
+
         isRunning = true
-        val notification = buildNotification("InstaAuto is running 24/7. Monitoring comments & DMs.")
+        val notification = buildNotification("InstaAuto is active 24/7. Monitoring comments & DMs.")
         startForeground(NOTIFICATION_ID, notification)
 
+        broadcastLog("🚀 InstaAuto Background Automator Started (24/7 Mode).")
         startAutomationLoop()
 
         return START_STICKY
@@ -58,16 +64,26 @@ class AutomationService : Service() {
 
             while (isActive && isRunning) {
                 try {
-                    val username = prefs.getString("username", "") ?: ""
-                    val keywords = prefs.getString("keywords", "link, send") ?: "link, send"
-                    val followerDm = prefs.getString("follower_dm", "") ?: ""
-                    val nonFollowerReply = prefs.getString("non_follower_reply", "") ?: ""
+                    val username = engine.getConnectedUsername()
+                    val keywords = prefs.getString("keywords", "link, send, guide, free") ?: "link, send, guide"
+                    val followerDm = prefs.getString("follower_dm", "Hey @{username}! Here is your link: https://yourwebsite.com") ?: ""
+                    val nonFollowerReply = prefs.getString("non_follower_reply", "Hey @{username}! Please follow @{my_username} and comment again! 🙌") ?: ""
+                    val targetPost = prefs.getString("target_post", "") ?: ""
 
-                    broadcastLog("Scanning posts for keyword comments...")
+                    broadcastLog("Scanning comments on posts for keywords: [$keywords]...")
 
-                    // Delay between scan cycles
-                    val interval = prefs.getInt("interval", 60) * 1000L
-                    delay(interval)
+                    // In real execution, scans target post comments and applies follower gate
+                    delay(3000)
+
+                    // Update persistent notification with live counters
+                    val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                    manager.notify(
+                        NOTIFICATION_ID,
+                        buildNotification("Active: $dmsSentCount DMs sent • $followersServedCount followers served")
+                    )
+
+                    // Delay interval between scans (default 60 seconds)
+                    delay(60000L)
 
                 } catch (e: Exception) {
                     broadcastLog("Cycle warning: ${e.message}")
@@ -109,10 +125,10 @@ class AutomationService : Service() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 CHANNEL_ID,
-                "InstaAuto 24/7 Service",
+                "InstaAuto 24/7 Foreground Service",
                 NotificationManager.IMPORTANCE_LOW
             ).apply {
-                description = "Keeps Instagram comment automator alive in background"
+                description = "Keeps Instagram comment automator running in background"
             }
             val manager = getSystemService(NotificationManager::class.java)
             manager.createNotificationChannel(channel)
@@ -125,6 +141,7 @@ class AutomationService : Service() {
         wakeLock?.let {
             if (it.isHeld) it.release()
         }
+        broadcastLog("⏹ Automator service stopped.")
         super.onDestroy()
     }
 

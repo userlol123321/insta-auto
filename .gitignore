@@ -12,3 +12,6 @@ android_apk/app/build/
 android_apk/build/
 android_apk/local.properties
 .DS_Store
+
+*.apk
+InstaAuto-Debug-APK/

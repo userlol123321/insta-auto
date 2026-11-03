@@ -1,362 +1,790 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0D1117"
-    android:fillViewport="true">
+    android:background="@color/bg_dark">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <!-- Top Header -->
+        <!-- Top Sleek Header -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/card_dark"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingStart="16dp"
+            android:paddingTop="14dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="14dp">
 
-            <TextView
+            <View
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="@drawable/bg_instagram_gradient" />
+
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
                 android:layout_weight="1"
-                android:text="InstaAuto DM"
-                android:textColor="#FFFFFF"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="InstaAuto"
+                    android:textColor="@color/text_primary"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="24/7 Follower DM Automator"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="11sp" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/tvStatusBadge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#33DA3633"
+                android:background="#33FF4D4D"
                 android:paddingStart="12dp"
-                android:paddingTop="4dp"
+                android:paddingTop="6dp"
                 android:paddingEnd="12dp"
-                android:paddingBottom="4dp"
-                android:text="STOPPED"
-                android:textColor="#F85149"
-                android:textSize="12sp"
+                android:paddingBottom="6dp"
+                android:text="DISCONNECTED"
+                android:textColor="@color/accent_red"
+                android:textSize="11sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <!-- Main Start/Stop Button -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnToggleBot"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_marginTop="16dp"
-            android:backgroundTint="#2EA043"
-            android:text="▶ Start Automator 24/7"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:cornerRadius="10dp" />
-
-        <!-- Stats Grid -->
+        <!-- Segmented Tab Navigation -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:background="@color/bg_dark"
             android:orientation="horizontal"
-            android:weightSum="3">
+            android:padding="12dp">
 
-            <LinearLayout
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/tabAutomator"
+                style="@style/Widget.Material3.Button.TonalButton"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="42dp"
                 android:layout_weight="1"
-                android:background="#161B22"
-                android:orientation="vertical"
-                android:padding="10dp">
+                android:backgroundTint="@color/accent_blue"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="⚡ Rules"
+                android:textColor="@color/text_primary"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:cornerRadius="8dp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="DMs Sent"
-                    android:textColor="#8B949E"
-                    android:textSize="11sp" />
-
-                <TextView
-                    android:id="@+id/tvStatDMs"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="0"
-                    android:textColor="#58A6FF"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <LinearLayout
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/tabAccount"
+                style="@style/Widget.Material3.Button.TonalButton"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="42dp"
                 android:layout_marginStart="8dp"
                 android:layout_weight="1"
-                android:background="#161B22"
-                android:orientation="vertical"
-                android:padding="10dp">
+                android:backgroundTint="@color/card_dark"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="🔐 Account"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:cornerRadius="8dp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Followers"
-                    android:textColor="#8B949E"
-                    android:textSize="11sp" />
-
-                <TextView
-                    android:id="@+id/tvStatFollowers"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="0"
-                    android:textColor="#3FB950"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <LinearLayout
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/tabLogs"
+                style="@style/Widget.Material3.Button.TonalButton"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="42dp"
                 android:layout_marginStart="8dp"
                 android:layout_weight="1"
-                android:background="#161B22"
-                android:orientation="vertical"
-                android:padding="10dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Blocked"
-                    android:textColor="#8B949E"
-                    android:textSize="11sp" />
-
-                <TextView
-                    android:id="@+id/tvStatBlocked"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="0"
-                    android:textColor="#F85149"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
+                android:backgroundTint="@color/card_dark"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="📊 Live Logs"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:cornerRadius="8dp" />
         </LinearLayout>
 
-        <!-- Instagram Account Card -->
-        <com.google.android.material.card.MaterialCardView
+        <!-- Scrollable Tab Content Container -->
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:cardBackgroundColor="#161B22"
-            app:cardCornerRadius="12dp"
-            app:strokeColor="#30363D"
-            app:strokeWidth="1dp">
+            android:layout_height="match_parent">
 
-            <LinearLayout
+            <!-- ======================================================== -->
+            <!-- TAB 1: AUTOMATION & RULES                                 -->
+            <!-- ======================================================== -->
+            <ScrollView
+                android:id="@+id/scrollAutomationTab"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="14dp">
+                android:layout_height="match_parent"
+                android:fillViewport="true"
+                android:visibility="visible">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="🔐 Instagram Account / API Key"
-                    android:textColor="#FFFFFF"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
-
-                <EditText
-                    android:id="@+id/etUsername"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:background="#0D1117"
-                    android:hint="Instagram Username"
-                    android:padding="10dp"
-                    android:textColor="#FFFFFF"
-                    android:textColorHint="#8B949E"
-                    android:textSize="14sp" />
+                    android:orientation="vertical"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingBottom="40dp">
 
-                <EditText
-                    android:id="@+id/etPassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:background="#0D1117"
-                    android:hint="Instagram Password (or API Key / Access Token)"
-                    android:inputType="textPassword"
-                    android:padding="10dp"
-                    android:textColor="#FFFFFF"
-                    android:textColorHint="#8B949E"
-                    android:textSize="14sp" />
+                    <!-- Hero Start / Stop Action Card -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_card_dark"
+                        android:orientation="vertical"
+                        android:padding="16dp">
 
-                <EditText
-                    android:id="@+id/etTwoFactorCode"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:background="#0D1117"
-                    android:hint="2FA / OTP Verification Code (if prompted)"
-                    android:padding="10dp"
-                    android:textColor="#FFFFFF"
-                    android:textColorHint="#8B949E"
-                    android:textSize="14sp" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
 
-        <!-- Campaign & Follower Link Gate Settings -->
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:cardBackgroundColor="#161B22"
-            app:cardCornerRadius="12dp"
-            app:strokeColor="#30363D"
-            app:strokeWidth="1dp">
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Automation Engine"
+                                android:textColor="@color/text_primary"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
 
-            <LinearLayout
+                            <TextView
+                                android:id="@+id/tvActiveAccountIndicator"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="No Account"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnToggleBot"
+                            android:layout_width="match_parent"
+                            android:layout_height="54dp"
+                            android:layout_marginTop="14dp"
+                            android:backgroundTint="@color/accent_green"
+                            android:text="▶ Start Automator 24/7"
+                            android:textColor="#FFFFFF"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            app:cornerRadius="12dp" />
+
+                        <TextView
+                            android:id="@+id/tvToggleWarning"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="⚠️ Connect your Instagram account first before starting."
+                            android:textColor="@color/accent_amber"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+
+                    <!-- Trigger Keywords Card -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:background="@drawable/bg_card_dark"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="🎯 Trigger Keywords"
+                            android:textColor="@color/text_primary"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="Comments containing any of these words trigger the follower check"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="11sp" />
+
+                        <EditText
+                            android:id="@+id/etKeywords"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/bg_input_field"
+                            android:hint="link, send, guide, free, info"
+                            android:padding="12dp"
+                            android:textColor="@color/text_primary"
+                            android:textColorHint="@color/text_secondary"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+
+                    <!-- Follower Secret Link Template Card -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:background="@drawable/bg_card_dark"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="🔒 DM Link (Followers Only)"
+                                android:textColor="@color/text_primary"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="#2200E676"
+                                android:paddingStart="8dp"
+                                android:paddingTop="2dp"
+                                android:paddingEnd="8dp"
+                                android:paddingBottom="2dp"
+                                android:text="Protected"
+                                android:textColor="@color/accent_green"
+                                android:textSize="10sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="Delivered exclusively to users who actively follow your account"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="11sp" />
+
+                        <EditText
+                            android:id="@+id/etFollowerDM"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/bg_input_field"
+                            android:gravity="top|start"
+                            android:hint="Hey @{username}! 👋 Here is your private link: https://yourwebsite.com/resource"
+                            android:lines="3"
+                            android:padding="12dp"
+                            android:textColor="@color/text_primary"
+                            android:textColorHint="@color/text_secondary"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:text="Spintax supported: {Hey|Hi} @{username}, here is your link!"
+                            android:textColor="@color/accent_blue"
+                            android:textSize="10sp" />
+                    </LinearLayout>
+
+                    <!-- Non-Follower Conversion Defense Card -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:background="@drawable/bg_card_dark"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="🛡️ Non-Follower Gate Reply"
+                            android:textColor="@color/text_primary"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="Public comment reply blocking the link and prompting them to follow"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="11sp" />
+
+                        <EditText
+                            android:id="@+id/etNonFollowerReply"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/bg_input_field"
+                            android:hint="Hey @{username}! I can only send the link to followers. Please follow @{my_username} and comment again! 🙌"
+                            android:padding="12dp"
+                            android:textColor="@color/text_primary"
+                            android:textColorHint="@color/text_secondary"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+
+                    <!-- Target Specific Post URL -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:background="@drawable/bg_card_dark"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="🎬 Target Post / Reel URL (Optional)"
+                            android:textColor="@color/text_primary"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/etTargetPost"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:background="@drawable/bg_input_field"
+                            android:hint="https://www.instagram.com/reel/C.../ (leave empty for latest posts)"
+                            android:padding="12dp"
+                            android:textColor="@color/text_primary"
+                            android:textColorHint="@color/text_secondary"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+
+                    <!-- Save Rules Button -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnSaveConfig"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:layout_marginTop="16dp"
+                        android:backgroundTint="@color/accent_blue"
+                        android:text="💾 Save Automation Rules"
+                        android:textColor="#FFFFFF"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        app:cornerRadius="12dp" />
+                </LinearLayout>
+            </ScrollView>
+
+            <!-- ======================================================== -->
+            <!-- TAB 2: INSTAGRAM ACCOUNT & LOGIN                          -->
+            <!-- ======================================================== -->
+            <ScrollView
+                android:id="@+id/scrollAccountTab"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="14dp">
+                android:layout_height="match_parent"
+                android:fillViewport="true"
+                android:visibility="gone">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="🎯 Trigger Keywords &amp; Follower Link"
-                    android:textColor="#FFFFFF"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Trigger Keywords (comma separated)"
-                    android:textColor="#8B949E"
-                    android:textSize="12sp" />
-
-                <EditText
-                    android:id="@+id/etKeywords"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#0D1117"
-                    android:hint="link, send, guide, free"
-                    android:padding="10dp"
-                    android:textColor="#FFFFFF"
-                    android:textColorHint="#8B949E"
-                    android:textSize="14sp" />
+                    android:orientation="vertical"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingBottom="40dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="DM Link Template (Sent ONLY to Followers)"
-                    android:textColor="#8B949E"
-                    android:textSize="12sp" />
+                    <!-- Connected Account Status Card -->
+                    <LinearLayout
+                        android:id="@+id/cardAccountStatus"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_card_dark"
+                        android:orientation="vertical"
+                        android:padding="16dp">
 
-                <EditText
-                    android:id="@+id/etFollowerDM"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="#0D1117"
-                    android:hint="Hey @{username}! Here is your link: https://yourwebsite.com/resource"
-                    android:lines="3"
-                    android:padding="10dp"
-                    android:textColor="#FFFFFF"
-                    android:textColorHint="#8B949E"
-                    android:textSize="14sp" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Comment Reply to Non-Followers (Blocks Link &amp; Asks to Follow)"
-                    android:textColor="#8B949E"
-                    android:textSize="12sp" />
+                            <TextView
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:background="@drawable/bg_instagram_gradient"
+                                android:gravity="center"
+                                android:text="IG"
+                                android:textColor="#FFFFFF"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
 
-                <EditText
-                    android:id="@+id/etNonFollowerReply"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="#0D1117"
-                    android:hint="Hey @{username}! Please follow @{my_username} and comment again to get the link! 🙌"
-                    android:padding="10dp"
-                    android:textColor="#FFFFFF"
-                    android:textColorHint="#8B949E"
-                    android:textSize="14sp" />
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="12dp"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Target Post / Reel URL (Optional)"
-                    android:textColor="#8B949E"
-                    android:textSize="12sp" />
+                                <TextView
+                                    android:id="@+id/tvConnectedUsername"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Not Connected"
+                                    android:textColor="@color/text_primary"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold" />
 
-                <EditText
-                    android:id="@+id/etTargetPost"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="#0D1117"
-                    android:hint="https://www.instagram.com/reel/C.../ (leave blank for latest posts)"
-                    android:padding="10dp"
-                    android:textColor="#FFFFFF"
-                    android:textColorHint="#8B949E"
-                    android:textSize="14sp" />
+                                <TextView
+                                    android:id="@+id/tvConnectedDetails"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Please log in below"
+                                    android:textColor="@color/text_secondary"
+                                    android:textSize="12sp" />
+                            </LinearLayout>
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnSaveConfig"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:backgroundTint="#58A6FF"
-                    android:text="💾 Save Settings (No Code Changes)"
-                    android:textColor="#FFFFFF"
-                    app:cornerRadius="8dp" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnDisconnectAccount"
+                                style="@style/Widget.Material3.Button.TextButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Disconnect"
+                                android:textColor="@color/accent_red"
+                                android:visibility="gone" />
+                        </LinearLayout>
+                    </LinearLayout>
 
-        <!-- Live Activity Log -->
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="24dp"
-            app:cardBackgroundColor="#161B22"
-            app:cardCornerRadius="12dp"
-            app:strokeColor="#30363D"
-            app:strokeWidth="1dp">
+                    <!-- Option 1: Official Instagram Web Login -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/bg_card_dark"
+                        android:orientation="vertical"
+                        android:padding="16dp">
 
-            <LinearLayout
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="🌐 Option 1: Official Instagram Web Login"
+                            android:textColor="@color/text_primary"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="Recommended: Opens Instagram's official login screen inside the app. 100% immune to device blocks and handles 2FA/SMS natively."
+                            android:textColor="@color/text_secondary"
+                            android:textSize="11sp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnWebLogin"
+                            android:layout_width="match_parent"
+                            android:layout_height="52dp"
+                            android:layout_marginTop="12dp"
+                            android:backgroundTint="@color/ig_pink"
+                            android:text="🌐 Connect via Official Instagram Web"
+                            android:textColor="#FFFFFF"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            app:cornerRadius="12dp" />
+                    </LinearLayout>
+
+                    <!-- Option 2: Direct Credentials Login -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/bg_card_dark"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="🔑 Option 2: Direct Credentials"
+                            android:textColor="@color/text_primary"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/etUsername"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/bg_input_field"
+                            android:hint="Instagram Username"
+                            android:padding="12dp"
+                            android:textColor="@color/text_primary"
+                            android:textColorHint="@color/text_secondary"
+                            android:textSize="13sp" />
+
+                        <EditText
+                            android:id="@+id/etPassword"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:background="@drawable/bg_input_field"
+                            android:hint="Instagram Password"
+                            android:inputType="textPassword"
+                            android:padding="12dp"
+                            android:textColor="@color/text_primary"
+                            android:textColorHint="@color/text_secondary"
+                            android:textSize="13sp" />
+
+                        <EditText
+                            android:id="@+id/etTwoFactorCode"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:background="@drawable/bg_input_field"
+                            android:hint="2FA / OTP Verification Code (if prompted)"
+                            android:padding="12dp"
+                            android:textColor="@color/text_primary"
+                            android:textColorHint="@color/text_secondary"
+                            android:textSize="13sp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnLoginCredentials"
+                            android:layout_width="match_parent"
+                            android:layout_height="52dp"
+                            android:layout_marginTop="12dp"
+                            android:backgroundTint="@color/accent_blue"
+                            android:text="🔐 Connect with Username &amp; Password"
+                            android:textColor="#FFFFFF"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            app:cornerRadius="12dp" />
+
+                        <ProgressBar
+                            android:id="@+id/pbLoginProgress"
+                            style="?android:attr/progressBarStyleHorizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:indeterminate="true"
+                            android:visibility="gone" />
+                    </LinearLayout>
+                </LinearLayout>
+            </ScrollView>
+
+            <!-- ======================================================== -->
+            <!-- TAB 3: LIVE STATS & LOGS                                  -->
+            <!-- ======================================================== -->
+            <ScrollView
+                android:id="@+id/scrollLogsTab"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="14dp">
+                android:layout_height="match_parent"
+                android:fillViewport="true"
+                android:visibility="gone">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="📜 Live Activity Logs"
-                    android:textColor="#FFFFFF"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tvLogs"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="180dp"
-                    android:layout_marginTop="8dp"
-                    android:background="#090D13"
-                    android:fontFamily="monospace"
-                    android:padding="10dp"
-                    android:scrollbars="vertical"
-                    android:text="[Ready] Configure your settings above and tap Start Automator."
-                    android:textColor="#8B949E"
-                    android:textSize="11sp" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingBottom="40dp">
 
+                    <!-- Stat Counters Grid -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="3">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_card_dark"
+                            android:orientation="vertical"
+                            android:padding="12dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="DMs Sent"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="10sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvStatDMs"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:text="0"
+                                android:textColor="@color/accent_blue"
+                                android:textSize="22sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_card_dark"
+                            android:orientation="vertical"
+                            android:padding="12dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Followers"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="10sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvStatFollowers"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:text="0"
+                                android:textColor="@color/accent_green"
+                                android:textSize="22sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_card_dark"
+                            android:orientation="vertical"
+                            android:padding="12dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Blocked"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="10sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvStatBlocked"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:text="0"
+                                android:textColor="@color/accent_red"
+                                android:textSize="22sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- Terminal Live Log Feed -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:background="@drawable/bg_card_dark"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="📜 Live Activity Logs"
+                                android:textColor="@color/text_primary"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnClearLogs"
+                                style="@style/Widget.Material3.Button.TextButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Clear"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="11sp" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/tvLogs"
+                            android:layout_width="match_parent"
+                            android:layout_height="320dp"
+                            android:layout_marginTop="8dp"
+                            android:background="@drawable/bg_input_field"
+                            android:fontFamily="monospace"
+                            android:padding="10dp"
+                            android:scrollbars="vertical"
+                            android:text="[System] InstaAuto ready. Configure rules and connect account."
+                            android:textColor="@color/text_secondary"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </ScrollView>
+
+            <!-- ======================================================== -->
+            <!-- IN-APP WEBVIEW LOGIN OVERLAY CONTAINER                    -->
+            <!-- ======================================================== -->
+            <LinearLayout
+                android:id="@+id/layoutWebViewOverlay"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/bg_dark"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/card_dark"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="12dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Instagram Official Login"
+                        android:textColor="@color/text_primary"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnCloseWebView"
+                        style="@style/Widget.Material3.Button.TextButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Close"
+                        android:textColor="@color/accent_red" />
+                </LinearLayout>
+
+                <WebView
+                    android:id="@+id/webViewInstagram"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+
+        </FrameLayout>
     </LinearLayout>
-</ScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
