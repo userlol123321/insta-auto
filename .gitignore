@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.env
+session.json
+automator.db
+bot.pid
+bot.log
+android_apk/.gradle/
+android_apk/app/build/
+android_apk/build/
+android_apk/local.properties
+.DS_Store
