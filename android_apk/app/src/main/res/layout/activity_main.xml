@@ -224,7 +224,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="🎯 Trigger Keywords & Follower Link"
+                    android:text="🎯 Trigger Keywords &amp; Follower Link"
                     android:textColor="#FFFFFF"
                     android:textSize="15sp"
                     android:textStyle="bold" />
@@ -272,7 +272,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="Comment Reply to Non-Followers (Blocks Link & Asks to Follow)"
+                    android:text="Comment Reply to Non-Followers (Blocks Link &amp; Asks to Follow)"
                     android:textColor="#8B949E"
                     android:textSize="12sp" />
 
