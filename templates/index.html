@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#0d1117">
+  <link rel="manifest" href="/manifest.json">
+  <title>InstaAuto • Follower DM Automator</title>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --card-bg: #161b22;
+      --border: #30363d;
+      --text: #e6edf3;
+      --muted: #8b949e;
+      --accent: #58a6ff;
+      --green: #2ea043;
+      --red: #da3633;
+      --orange: #d29922;
+      --ig-gradient: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background-color: var(--bg); color: var(--text); padding-bottom: 60px; }
+    
+    header {
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logo-container { display: flex; align-items: center; gap: 10px; }
+    .badge-gradient {
+      width: 30px; height: 30px; border-radius: 8px;
+      background: var(--ig-gradient); display: flex; align-items: center; justify-content: center;
+      font-weight: bold; font-size: 16px; color: white;
+    }
+    h1 { font-size: 17px; font-weight: 600; }
+    
+    .status-pill {
+      padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .status-pill.online { background: rgba(46, 160, 67, 0.15); color: #3fb950; border: 1px solid #2ea043; }
+    .status-pill.offline { background: rgba(218, 54, 51, 0.15); color: #f85149; border: 1px solid #da3633; }
+    .status-dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+
+    .container { max-width: 800px; margin: 0 auto; padding: 14px; display: flex; flex-direction: column; gap: 14px; }
+
+    /* Button Styles */
+    .btn {
+      padding: 10px 16px; border-radius: 8px; font-size: 14px; font-weight: 600;
+      border: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      transition: opacity 0.2s;
+    }
+    .btn:active { opacity: 0.8; }
+    .btn-green { background: var(--green); color: white; }
+    .btn-red { background: var(--red); color: white; }
+    .btn-primary { background: var(--accent); color: white; }
+    .btn-secondary { background: #21262d; border: 1px solid var(--border); color: var(--text); }
+    .btn-gradient { background: var(--ig-gradient); color: white; }
+
+    /* Cards */
+    .card {
+      background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px;
+      overflow: hidden;
+    }
+    .card-header {
+      padding: 14px 16px; border-bottom: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .card-title { font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+    .card-body { padding: 16px; }
+
+    /* Control Bar */
+    .control-card {
+      background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 16px;
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
+    }
+
+    /* Stats Grid */
+    .grid-stats {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;
+    }
+    @media (min-width: 600px) {
+      .grid-stats { grid-template-columns: repeat(4, 1fr); }
+    }
+    .stat-card {
+      background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px;
+      padding: 12px; display: flex; flex-direction: column; gap: 6px;
+    }
+    .stat-title { font-size: 11px; color: var(--muted); text-transform: uppercase; font-weight: 600; }
+    .stat-num { font-size: 22px; font-weight: 700; color: var(--text); }
+    .stat-badge { font-size: 11px; padding: 2px 6px; border-radius: 4px; align-self: flex-start; }
+    .badge-ok { background: rgba(46, 160, 67, 0.2); color: #3fb950; }
+    .badge-warn { background: rgba(210, 153, 34, 0.2); color: #d29922; }
+
+    /* Form Fields */
+    .form-group { margin-bottom: 12px; display: flex; flex-direction: column; gap: 6px; }
+    label { font-size: 13px; font-weight: 500; color: var(--muted); }
+    input, textarea {
+      background: #0d1117; border: 1px solid var(--border); border-radius: 6px;
+      padding: 10px; color: var(--text); font-size: 14px; width: 100%;
+    }
+    input:focus, textarea:focus { border-color: var(--accent); outline: none; }
+    .hint { font-size: 11px; color: var(--muted); line-height: 1.4; }
+
+    /* Activity Items */
+    .activity-item {
+      padding: 10px 0; border-bottom: 1px solid var(--border); display: flex;
+      flex-direction: column; gap: 4px; font-size: 13px;
+    }
+    .activity-item:last-child { border-bottom: none; }
+    .activity-meta { display: flex; justify-content: space-between; align-items: center; }
+    .activity-user { font-weight: 600; color: var(--accent); }
+    .activity-date { font-size: 11px; color: var(--muted); }
+    .activity-text { color: var(--text); }
+    .activity-tag {
+      font-size: 11px; padding: 2px 8px; border-radius: 12px; font-weight: 500;
+      align-self: flex-start; margin-top: 4px;
+    }
+    .tag-follower { background: rgba(46, 160, 67, 0.2); color: #3fb950; }
+    .tag-blocked { background: rgba(218, 54, 51, 0.2); color: #f85149; }
+
+    /* Console */
+    .console {
+      background: #090d13; border-radius: 8px; padding: 10px;
+      font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+      font-size: 12px; max-height: 220px; overflow-y: auto; display: flex; flex-direction: column; gap: 4px;
+    }
+    .log-line { display: flex; gap: 8px; line-height: 1.4; word-break: break-word; }
+    .log-time { color: var(--muted); }
+    .log-INFO { color: #58a6ff; }
+    .log-WARNING { color: #d29922; }
+    .log-ERROR { color: #f85149; }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center;
+      z-index: 1000; padding: 16px;
+    }
+    .modal {
+      background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px;
+      width: 100%; max-width: 400px; padding: 20px; display: flex; flex-direction: column; gap: 14px;
+    }
+    .modal-title { font-size: 16px; font-weight: 600; color: var(--text); }
+
+    /* Install Banner */
+    #installBanner {
+      display: none; background: rgba(88, 166, 255, 0.15); border: 1px solid var(--accent);
+      border-radius: 10px; padding: 12px; justify-content: space-between; align-items: center;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo-container">
+      <div class="badge-gradient">📷</div>
+      <h1>InstaAuto DM</h1>
+    </div>
+    <div id="statusPill" class="status-pill {{ 'online' if is_running else 'offline' }}">
+      <div class="status-dot"></div>
+      <span id="statusText">{{ 'ACTIVE' if is_running else 'STOPPED' }}</span>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <!-- Install App Banner (PWA / WebAPK) -->
+    <div id="installBanner">
+      <div>
+        <div style="font-weight: 600; font-size: 13px;">📲 Install on Your Phone</div>
+        <div style="font-size: 11px; color: var(--muted);">Add to home screen as an Android App</div>
+      </div>
+      <button class="btn btn-primary" style="padding: 6px 12px; font-size: 12px;" onclick="installPWA()">Install</button>
+    </div>
+
+    <!-- Daemon Control Bar -->
+    <div class="control-card">
+      <div>
+        <div style="font-weight: 600; font-size: 15px;">Automator Daemon</div>
+        <div style="font-size: 12px; color: var(--muted);" id="accountDisplay">
+          Account: @<span id="displayUsername">{{ config.ig_username or 'Not logged in' }}</span>
+        </div>
+      </div>
+      <div style="display: flex; gap: 8px;">
+        <button id="btnStart" class="btn btn-green" onclick="toggleBot('start')" style="{{ 'display:none;' if is_running else '' }}">
+          ▶ Start Automator
+        </button>
+        <button id="btnStop" class="btn btn-red" onclick="toggleBot('stop')" style="{{ '' if is_running else 'display:none;' }}">
+          ⏹ Stop Automator
+        </button>
+      </div>
+    </div>
+
+    <!-- Instagram Account Login & 2FA (100% In-UI) -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">🔐 Instagram Account & Login</span>
+        <span id="authBadge" class="stat-badge {{ 'badge-ok' if is_logged_in else 'badge-warn' }}">
+          {{ 'Session Active' if is_logged_in else 'Not Logged In' }}
+        </span>
+      </div>
+      <div class="card-body">
+        <form id="loginForm" onsubmit="handleLogin(event)">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div class="form-group">
+              <label>Instagram Username</label>
+              <input type="text" id="loginUsername" placeholder="e.g. your_instagram_handle" value="{{ config.ig_username }}">
+            </div>
+            <div class="form-group">
+              <label>Instagram Password</label>
+              <input type="password" id="loginPassword" placeholder="••••••••••••" value="{{ config.ig_password }}">
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 10px; margin-top: 6px;">
+            <button type="submit" id="btnLogin" class="btn btn-gradient" style="flex: 1;">
+              🔑 Log In to Instagram
+            </button>
+            <button type="button" class="btn btn-secondary" onclick="handleLogout()">
+              Log Out
+            </button>
+          </div>
+          <span class="hint" style="margin-top: 8px; display: block;">
+            Your login token is encrypted and saved directly on your phone. If 2FA is enabled, you'll be prompted for your code.
+          </span>
+        </form>
+      </div>
+    </div>
+
+    <!-- Stats Overview -->
+    <div class="grid-stats">
+      <div class="stat-card">
+        <div class="stat-title">Today's DMs</div>
+        <div class="stat-num" id="statTodayDMs">{{ stats.today_dms }} / {{ config.max_dms_per_day }}</div>
+        <span class="stat-badge badge-ok">Daily Limit</span>
+      </div>
+      <div class="stat-card">
+        <div class="stat-title">Followers Sent Link</div>
+        <div class="stat-num" id="statFollowers">{{ stats.today_followers_served }}</div>
+        <span class="stat-badge badge-ok">Delivered</span>
+      </div>
+      <div class="stat-card">
+        <div class="stat-title">Non-Followers Blocked</div>
+        <div class="stat-num" id="statBlocked">{{ stats.today_non_followers_blocked }}</div>
+        <span class="stat-badge badge-warn">Link Protected</span>
+      </div>
+      <div class="stat-card">
+        <div class="stat-title">Total Comments</div>
+        <div class="stat-num" id="statTotal">{{ stats.total_processed_comments }}</div>
+        <span class="stat-badge badge-ok">Scanned</span>
+      </div>
+    </div>
+
+    <!-- Campaign & Keyword Rules Editor -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">🎯 Trigger Keywords & Follower Link Gate</span>
+      </div>
+      <div class="card-body">
+        <form id="configForm" onsubmit="saveSettings(event)">
+          {% set campaign = config.campaigns[0] if config.campaigns else None %}
+
+          <div class="form-group">
+            <label>Trigger Keywords (comma-separated)</label>
+            <input type="text" id="keywordsInput" value="{{ campaign.keywords | join(', ') if campaign else 'link, send, guide' }}">
+            <span class="hint">When someone comments any of these words on your posts, the bot verifies if they follow you.</span>
+          </div>
+
+          <div class="form-group">
+            <label>DM Template for Verified Followers (Delivers the Link)</label>
+            <textarea id="followerDmInput" rows="3">{{ campaign.follower_dm_template if campaign else '{Hey|Hi|Hello} @{username}! 👋 Here is your link: https://yourwebsite.com/free-resource {Enjoy!|Hope this helps!}' }}</textarea>
+            <span class="hint">Supports Spintax variation: {Hey|Hi|Hello} and variables: @{username}, @{my_username}, {keyword}</span>
+          </div>
+
+          <div class="form-group">
+            <label>Comment Reply to Followers</label>
+            <input type="text" id="followerReplyInput" value="{{ campaign.follower_comment_reply if campaign else 'Sent you a DM! Check your inbox / requests 📩' }}">
+          </div>
+
+          <div class="form-group">
+            <label>Comment Reply to Non-Followers (Block link & ask to follow)</label>
+            <input type="text" id="nonFollowerReplyInput" value="{{ campaign.non_follower_comment_reply if campaign else 'Hey @{username}! I can only send the link to followers. Please follow @{my_username} and comment again! 🙌' }}">
+            <span class="hint">They will NOT get the link until they follow your account and comment again.</span>
+          </div>
+
+          <div class="form-group">
+            <label>Target Specific Post / Reel URL (Optional)</label>
+            <input type="text" id="targetPostInput" placeholder="https://www.instagram.com/reel/C.../ (leave blank to scan latest posts)" value="{{ config.target_posts[0] if config.target_posts else '' }}">
+            <span class="hint">Leave empty to automatically monitor your latest 3 posts.</span>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div class="form-group">
+              <label>Daily DM Quota</label>
+              <input type="number" id="maxDmsInput" value="{{ config.max_dms_per_day }}">
+            </div>
+            <div class="form-group">
+              <label>Scan Interval (seconds)</label>
+              <input type="number" id="intervalInput" value="{{ config.check_interval_min }}">
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 6px;">
+            💾 Save Settings (No Code Changes Needed)
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Live Event Feed -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">⚡ Live Activity Feed</span>
+        <span style="font-size: 11px; color: var(--muted);">Auto-updating</span>
+      </div>
+      <div class="card-body" id="activityList" style="max-height: 250px; overflow-y: auto;">
+        {% if recent_activity %}
+          {% for a in recent_activity %}
+            <div class="activity-item">
+              <div class="activity-meta">
+                <span class="activity-user">@{{ a.username }}</span>
+                <span class="activity-date">{{ a.created_at }}</span>
+              </div>
+              <div class="activity-text">"{{ a.comment_text }}" (Keyword: {{ a.matched_keyword or 'None' }})</div>
+              <span class="activity-tag {{ 'tag-follower' if a.is_follower else 'tag-blocked' }}">
+                {{ '✅ Follower: Link DM Sent' if a.is_follower else '🛡️ Non-Follower: Link Blocked' }} • {{ a.status_message }}
+              </span>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div style="color: var(--muted); font-size: 13px; text-align: center; padding: 15px;">No comments processed yet.</div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Terminal Console Logs -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">📜 Console Logs</span>
+        <button class="btn btn-secondary" style="padding: 4px 10px; font-size: 12px;" onclick="fetchLogs()">Refresh</button>
+      </div>
+      <div class="card-body">
+        <div class="console" id="consoleLogs">
+          {% for log in recent_logs %}
+            <div class="log-line">
+              <span class="log-time">[{{ log.created_at }}]</span>
+              <span class="log-{{ log.level }}">[{{ log.level }}]</span>
+              <span>{{ log.message }}</span>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 2FA Verification Modal -->
+  <div id="twoFactorModal" class="modal-overlay">
+    <div class="modal">
+      <div class="modal-title">🔐 Two-Factor Authentication</div>
+      <p style="font-size: 13px; color: var(--muted);" id="modalDescription">
+        Enter the 6-digit verification code from your Authenticator App or SMS:
+      </p>
+      <input type="text" id="twoFactorCodeInput" placeholder="123456" maxlength="8" style="font-size: 20px; letter-spacing: 4px; text-align: center;">
+      <div style="display: flex; gap: 8px;">
+        <button class="btn btn-primary" style="flex: 1;" onclick="submit2FACode()">Verify & Log In</button>
+        <button class="btn btn-secondary" onclick="close2FAModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // PWA Service Worker Registration
+    let deferredPrompt;
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js');
+    }
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      document.getElementById('installBanner').style.display = 'flex';
+    });
+    function installPWA() {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then(() => {
+          document.getElementById('installBanner').style.display = 'none';
+        });
+      }
+    }
+
+    // Bot Daemon Controls
+    async function toggleBot(action) {
+      try {
+        const res = await fetch(`/api/bot/${action}`, { method: 'POST' });
+        const data = await res.json();
+        alert(data.message);
+        updateUI();
+      } catch (err) {
+        alert('Action failed: ' + err);
+      }
+    }
+
+    // Direct Login from UI
+    let pendingUsername = '';
+    let pendingPassword = '';
+
+    async function handleLogin(e) {
+      e.preventDefault();
+      const username = document.getElementById('loginUsername').value.trim();
+      const password = document.getElementById('loginPassword').value.trim();
+      if (!username || !password) {
+        alert('Please enter your Instagram username and password.');
+        return;
+      }
+
+      pendingUsername = username;
+      pendingPassword = password;
+
+      const btn = document.getElementById('btnLogin');
+      btn.innerText = '⏳ Logging in...';
+      btn.disabled = true;
+
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+        const data = await res.json();
+
+        if (data.status === '2fa_required' || data.status === 'challenge_required') {
+          document.getElementById('modalDescription').innerText = data.message;
+          document.getElementById('twoFactorModal').style.display = 'flex';
+        } else if (data.status === 'success') {
+          alert('✅ ' + data.message);
+          updateUI();
+        } else {
+          alert('❌ ' + data.message);
+        }
+      } catch (err) {
+        alert('Login error: ' + err);
+      } finally {
+        btn.innerText = '🔑 Log In to Instagram';
+        btn.disabled = false;
+      }
+    }
+
+    async function submit2FACode() {
+      const code = document.getElementById('twoFactorCodeInput').value.trim();
+      if (!code) {
+        alert('Please enter the 6-digit code.');
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            username: pendingUsername,
+            password: pendingPassword,
+            verification_code: code
+          })
+        });
+        const data = await res.json();
+        if (data.status === 'success') {
+          close2FAModal();
+          alert('✅ ' + data.message);
+          updateUI();
+        } else {
+          alert('❌ ' + data.message);
+        }
+      } catch (e) {
+        alert('Verification error: ' + e);
+      }
+    }
+
+    function close2FAModal() {
+      document.getElementById('twoFactorModal').style.display = 'none';
+      document.getElementById('twoFactorCodeInput').value = '';
+    }
+
+    async function handleLogout() {
+      if (!confirm('Are you sure you want to log out and clear the session?')) return;
+      try {
+        const res = await fetch('/api/auth/logout', { method: 'POST' });
+        const data = await res.json();
+        alert(data.message);
+        updateUI();
+      } catch (err) {
+        alert('Logout error: ' + err);
+      }
+    }
+
+    // Save Settings from UI
+    async function saveSettings(e) {
+      e.preventDefault();
+      const payload = {
+        keywords: document.getElementById('keywordsInput').value,
+        follower_dm_template: document.getElementById('followerDmInput').value,
+        follower_comment_reply: document.getElementById('followerReplyInput').value,
+        non_follower_comment_reply: document.getElementById('nonFollowerReplyInput').value,
+        target_post_url: document.getElementById('targetPostInput').value,
+        max_dms_per_day: document.getElementById('maxDmsInput').value,
+        check_interval_min: document.getElementById('intervalInput').value
+      };
+
+      try {
+        const res = await fetch('/api/config/update', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        alert(data.message);
+        updateUI();
+      } catch (err) {
+        alert('Failed saving settings: ' + err);
+      }
+    }
+
+    // Live Auto-Refresh
+    async function updateUI() {
+      try {
+        const statsRes = await fetch('/api/stats');
+        const stats = await statsRes.json();
+
+        // Status Pill
+        const pill = document.getElementById('statusPill');
+        const statusText = document.getElementById('statusText');
+        const btnStart = document.getElementById('btnStart');
+        const btnStop = document.getElementById('btnStop');
+
+        if (stats.is_running) {
+          pill.className = 'status-pill online';
+          statusText.innerText = 'ACTIVE';
+          btnStart.style.display = 'none';
+          btnStop.style.display = 'inline-flex';
+        } else {
+          pill.className = 'status-pill offline';
+          statusText.innerText = 'STOPPED';
+          btnStart.style.display = 'inline-flex';
+          btnStop.style.display = 'none';
+        }
+
+        // Auth badge
+        const authBadge = document.getElementById('authBadge');
+        if (stats.is_logged_in) {
+          authBadge.className = 'stat-badge badge-ok';
+          authBadge.innerText = 'Session Active';
+        } else {
+          authBadge.className = 'stat-badge badge-warn';
+          authBadge.innerText = 'Not Logged In';
+        }
+
+        // Stats Counters
+        document.getElementById('statFollowers').innerText = stats.today_followers_served;
+        document.getElementById('statBlocked').innerText = stats.today_non_followers_blocked;
+        document.getElementById('statTotal').innerText = stats.total_processed_comments;
+
+        fetchLogs();
+        fetchActivity();
+      } catch (e) {}
+    }
+
+    async function fetchLogs() {
+      try {
+        const res = await fetch('/api/logs');
+        const logs = await res.json();
+        const container = document.getElementById('consoleLogs');
+        container.innerHTML = logs.map(l => `
+          <div class="log-line">
+            <span class="log-time">[${l.created_at}]</span>
+            <span class="log-${l.level}">[${l.level}]</span>
+            <span>${l.message}</span>
+          </div>
+        `).join('');
+      } catch (e) {}
+    }
+
+    async function fetchActivity() {
+      try {
+        const res = await fetch('/api/activity');
+        const items = await res.json();
+        const container = document.getElementById('activityList');
+        if (!items || items.length === 0) return;
+        container.innerHTML = items.map(a => `
+          <div class="activity-item">
+            <div class="activity-meta">
+              <span class="activity-user">@${a.username}</span>
+              <span class="activity-date">${a.created_at}</span>
+            </div>
+            <div class="activity-text">"${a.comment_text}" (Keyword: ${a.matched_keyword || 'None'})</div>
+            <span class="activity-tag ${a.is_follower ? 'tag-follower' : 'tag-blocked'}">
+              ${a.is_follower ? '✅ Follower: Link DM Sent' : '🛡️ Non-Follower: Link Blocked'} • ${a.status_message}
+            </span>
+          </div>
+        `).join('');
+      } catch (e) {}
+    }
+
+    setInterval(updateUI, 7000);
+  </script>
+</body>
+</html>

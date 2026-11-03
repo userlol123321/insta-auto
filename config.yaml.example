@@ -1,0 +1,57 @@
+# ==============================================================================
+# Instagram Comment-to-DM Follower-Gated Automator Configuration
+# ==============================================================================
+
+instagram:
+  # Your Instagram account login credentials
+  username: "your_instagram_username"
+  password: "your_instagram_password"
+  session_file: "session.json"
+
+bot:
+  # Number of recent posts to scan for comments on each cycle (if target_posts is empty)
+  monitor_latest_posts_count: 3
+  
+  # Optional: Limit monitoring to specific post shortcodes, URLs, or Media IDs
+  # Leave empty [] to automatically scan your latest posts
+  # Example: ["https://www.instagram.com/p/C3123456789/", "C3123456789"]
+  target_posts: []
+
+  # Polling interval in seconds (bot picks a random time between min and max)
+  check_interval_min: 60
+  check_interval_max: 120
+
+  # Human-like delay between comment checks and sending DMs (seconds)
+  action_delay_min: 4
+  action_delay_max: 9
+
+  # Maximum DMs allowed per calendar day (protects account from Instagram action blocks)
+  max_dms_per_day: 50
+
+  # Automatically like the commenter's comment when replying
+  like_comment: true
+
+# Campaign rules: Match keywords and define responses
+# You can support Spintax like {Hey|Hi|Hello} to rotate phrases and prevent spam detection.
+campaigns:
+  - name: "Main Link Campaign"
+    # Keywords that trigger this rule (case-insensitive substring/word matching)
+    keywords: ["link", "send", "info", "guide", "free"]
+    
+    # DM sent ONLY to verified active FOLLOWERS
+    follower_dm_template: "{Hey|Hi|Hello} @{username}! 👋 Here is the private link you requested: https://yourwebsite.com/exclusive-link {Enjoy!|Hope this helps!|Let me know if you have any questions!}"
+
+    # Public reply to the follower's comment (leave empty "" to skip comment reply)
+    follower_comment_reply: "Sent you a DM! Check your messages/requests 📩"
+
+    # Public reply to NON-FOLLOWERS (they do NOT get the link)
+    non_follower_comment_reply: "Hey @{username}! I can only send this link to followers. Please follow @{my_username} and comment '{keyword}' again, and I'll send it right over! 🙌"
+
+    # Whether to also send a DM to non-followers asking them to follow (default: false to conserve daily DM quota)
+    send_dm_to_non_followers: false
+    non_follower_dm_template: "Hey @{username}! You must follow @{my_username} to receive this link. Follow the account and reply here with '{keyword}'!"
+
+web_ui:
+  enabled: true
+  host: "0.0.0.0"
+  port: 8080
